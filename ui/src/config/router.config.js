@@ -3,48 +3,6 @@ import { UserLayout, BasicLayout, RouteView, BlankLayout, PageView } from '@/lay
 import { bxAnaalyse } from '@/core/icons'
 
 export const asyncRouterMap = [
-
-  {
-    path: '/',
-    name: 'index',
-    component: BasicLayout,
-    meta: { title: 'Dashboard', auth: true },
-    redirect: '/dashboard',
-    children: [
-      // dashboard
-      {
-        path: '/dashboard',
-        name: 'dashboard',
-        hideChildrenInMenu: true,
-        component: () => import('@/views/dashboard/Analysis'),
-        meta: { title: 'Dashboard', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ], auth: true }
-      },
-
-      {
-        path: '/tracked-images',
-        name: 'tracked',
-        hideChildrenInMenu: true,
-        meta: { title: 'Tracked Images', keepAlive: true, icon: 'reconciliation', permission: [ 'dashboard' ], auth: true },
-        component: () => import('@/views/tracked/TrackedImageList')
-      },
-
-      {
-        path: '/approvals',
-        name: 'approvals',
-        hideChildrenInMenu: true,
-        meta: { title: 'Approvals', keepAlive: true, icon: 'form', permission: [ 'dashboard' ], auth: true },
-        component: () => import('@/views/approvals/Approvals')
-      },
-
-      {
-        path: '/audit-logs',
-        name: 'audit',
-        component: () => import('@/views/audit/AuditLogs'),
-        hideChildrenInMenu: true,
-        meta: { title: 'Audit', keepAlive: true, icon: 'profile', permission: [ 'dashboard' ], auth: true }
-      }
-    ]
-  },
   {
     path: '*', redirect: '/404', hidden: true
   }
@@ -56,47 +14,47 @@ export const asyncRouterMap = [
  */
 export const constantRouterMap = [
 
-  // {
-  //   path: '/',
-  //   name: 'index',
-  //   component: BasicLayout,
-  //   meta: { title: 'Dashboard', auth: true },
-  //   redirect: '/dashboard',
-  //   children: [
-  //     // dashboard
-  //     {
-  //       path: '/dashboard',
-  //       name: 'dashboard',
-  //       hideChildrenInMenu: true,
-  //       component: () => import('@/views/dashboard/Analysis'),
-  //       meta: { title: 'Dashboard', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ], auth: true }
-  //     },
+  {
+    path: '/',
+    name: 'index',
+    component: BasicLayout,
+    meta: { title: 'Dashboard' },
+    redirect: '/dashboard',
+    children: [
+      // dashboard
+      {
+        path: '/dashboard',
+        name: 'dashboard',
+        hideChildrenInMenu: true,
+        component: () => import('@/views/dashboard/Analysis'),
+        meta: { title: 'Dashboard', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ] }
+      },
 
-  //     {
-  //       path: '/tracked-images',
-  //       name: 'tracked',
-  //       hideChildrenInMenu: true,
-  //       meta: { title: 'Tracked Images', keepAlive: true, icon: 'reconciliation', permission: [ 'dashboard' ], auth: true },
-  //       component: () => import('@/views/tracked/TrackedImageList')
-  //     },
+      {
+        path: '/tracked-images',
+        name: 'tracked',
+        hideChildrenInMenu: true,
+        meta: { title: 'Tracked Images', keepAlive: true, icon: 'reconciliation', permission: [ 'dashboard' ] },
+        component: () => import('@/views/tracked/TrackedImageList')
+      },
 
-  //     {
-  //       path: '/approvals',
-  //       name: 'approvals',
-  //       hideChildrenInMenu: true,
-  //       meta: { title: 'Approvals', keepAlive: true, icon: 'form', permission: [ 'dashboard' ], auth: true },
-  //       component: () => import('@/views/approvals/Approvals')
-  //     },
+      {
+        path: '/approvals',
+        name: 'approvals',
+        hideChildrenInMenu: true,
+        meta: { title: 'Approvals', keepAlive: true, icon: 'form', permission: [ 'dashboard' ] },
+        component: () => import('@/views/approvals/Approvals')
+      },
 
-  //     {
-  //       path: '/audit-logs',
-  //       name: 'audit',
-  //       component: () => import('@/views/audit/AuditLogs'),
-  //       hideChildrenInMenu: true,
-  //       meta: { title: 'Audit', keepAlive: true, icon: 'profile', permission: [ 'dashboard' ], auth: true }
-  //     }
-  //   ]
-  // },
+      {
+        path: '/audit-logs',
+        name: 'audit',
+        component: () => import('@/views/audit/AuditLogs'),
+        hideChildrenInMenu: true,
+        meta: { title: 'Audit', keepAlive: true, icon: 'profile', permission: [ 'dashboard' ] }
+      }
+    ]
+  },
 
   {
     path: '/user',

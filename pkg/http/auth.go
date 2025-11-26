@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	request "github.com/golang-jwt/jwt/v4/request"
 	"github.com/keel-hq/keel/pkg/auth"
@@ -29,6 +30,12 @@ func (s *TriggerServer) requireAdminAuthorization(next http.HandlerFunc) http.Ha
 		//
 		if r.Method == "OPTIONS" {
 			rw.WriteHeader(200)
+			return
+		}
+
+		// Bypass authentication if BYPASS_AUTH is set
+		if os.Getenv("BYPASS_AUTH") == "true" {
+			next(rw, r)
 			return
 		}
 
@@ -145,4 +152,15 @@ func (s *TriggerServer) refreshHandler(resp http.ResponseWriter, req *http.Reque
 	resp.Header().Add("Authorization", fmt.Sprintf("Bearer %s", authResp.Token))
 
 	response(authResp, http.StatusOK, err, resp, req)
+}
+
+type authConfigResponse struct {
+	BypassAuth bool `json:"bypass_auth"`
+}
+
+func (s *TriggerServer) authConfigHandler(resp http.ResponseWriter, req *http.Request) {
+	config := authConfigResponse{
+		BypassAuth: os.Getenv("BYPASS_AUTH") == "true",
+	}
+	response(&config, http.StatusOK, nil, resp, req)
 }

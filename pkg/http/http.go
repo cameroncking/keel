@@ -131,8 +131,13 @@ func (s *TriggerServer) registerRoutes(mux *mux.Router) {
 
 	mux.Handle("/metrics", promhttp.Handler())
 
-	if s.authenticator.Enabled() {
-		log.Info("authentication enabled, setting up admin HTTP handlers")
+	// auth config endpoint (no auth required, used by frontend to check bypass status)
+	mux.HandleFunc("/v1/auth/config", s.authConfigHandler).Methods("GET", "OPTIONS")
+
+	bypassAuth := os.Getenv("BYPASS_AUTH") == "true"
+
+	if s.authenticator.Enabled() || bypassAuth {
+		log.Info("setting up admin HTTP handlers")
 		// auth
 		mux.HandleFunc("/v1/auth/login", s.loginHandler).Methods("POST", "OPTIONS")
 		mux.HandleFunc("/v1/auth/info", s.requireAdminAuthorization(s.userInfoHandler)).Methods("GET", "OPTIONS")
@@ -302,9 +307,14 @@ func (s *TriggerServer) userInfoHandler(resp http.ResponseWriter, req *http.Requ
 
 	user := auth.GetAccountFromCtx(req.Context())
 
+	username := "admin"
+	if user != nil && user.Username != "" {
+		username = user.Username
+	}
+
 	ui := UserInfo{
 		ID:            "1",
-		Name:          user.Username,
+		Name:          username,
 		Avatar:        "",
 		Status:        1,
 		LastLoginIP:   "",
